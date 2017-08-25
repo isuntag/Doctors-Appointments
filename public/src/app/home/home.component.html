@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="logout">
+        <button name="logout" (click)="logout()">Logout</button>
+    </div>
+    <h1 class="welcome" *ngIf="user">Welcome {{ user.name }}!</h1>
+    <div class="content">
+        <div class="appointments">
+            <app-homedash *ngIf="user" [appointments] = "appointments" [user]="user" (refresh)="refresh()"></app-homedash>
+        </div>
+        <div class="newAppointment">
+            <a [routerLink]="['/new_appointment']"><button>Add New Appointment</button></a>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="container">
+    <h1 class="welcome">New Appointment</h1>
+    <div class="content">
+    <p *ngIf='error'>{{error}}</p>
+
+    <form #form="ngForm" (submit)="onSubmit()">
+        <div>
+            <label for="date">Date:</label>
+            <input
+            type="date"
+            name="date"
+            required
+            [(ngModel)]="appointment.date"
+            #date="ngModel"
+            min="{{today | date: 'yyyy-MM-dd'}}"
+            >
+            <div class="error" *ngIf="appointment.date == null">
+                <span *ngIf="appointment.date == null">Date is required.</span>
+            </div>
+        </div>
+        <div>
+            <label for="time">Time:</label>
+            <input
+            type="time"
+            name="time"
+            required
+            [(ngModel)]="appointment.time"
+            #time="ngModel"
+
+            >
+            <div class="error" *ngIf="appointment.time == null">
+                <span *ngIf="appointment.time == null">Time is required.</span>
+            </div>
+        </div>
+        <div>
+            <label class="top" for="complain">Complaint:</label>
+            <textarea
+            name="complain"
+            required
+            minlength="10"
+            [(ngModel)]="appointment.complain"
+            #complain="ngModel"
+            ></textarea>
+            <div class="error" *ngIf="appointment.complain.length < 10">
+                <span *ngIf="appointment.complain.length < 1">Question is required.</span>
+                <span *ngIf="appointment.complain.length >= 1 && appointment.complain.length < 10">Complaint must be at least 10 characters.</span>
+            </div>
+        </div>
+        <div>
+            <input
+            type="submit"
+            value="Create"
+            [disabled]="form.invalid"
+            > <button [routerLink]="['/']">Go back</button>
+        </div>
+    </form>
+</div>
+</div>

@@ -1,0 +1,18 @@
+<div class="container">
+    <h1>Doctor's Appointments</h1>
+    <div class="content">
+        <div class="info">
+            <p>Please enter your name to view and add appointments.</p>
+        </div>
+        <form #form="ngForm" (submit)="login()">
+            Name: <input
+            type="text"
+            name="name"
+            required
+            #name="ngModel"
+            [(ngModel)]="user.name"
+            >
+            <input type="submit" value="Login" [disabled]="form.invalid">
+        </form>
+    </div>
+</div>
