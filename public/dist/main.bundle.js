@@ -21,7 +21,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".top {\n    vertical-align: top;\n}\n.error {\n    color: graytext;\n}\n", ""]);
+exports.push([module.i, "small {\n    text-align: center;\n}\nform {\n    margin-bottom: 20px;\n}\n", ""]);
 
 // exports
 
@@ -34,7 +34,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/add/add.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <h1 class=\"welcome\">New Appointment</h1>\n    <div class=\"content\">\n    <p *ngIf='error'>{{error}}</p>\n\n    <form #form=\"ngForm\" (submit)=\"onSubmit()\">\n        <div>\n            <label for=\"date\">Date:</label>\n            <input\n            type=\"date\"\n            name=\"date\"\n            required\n            [(ngModel)]=\"appointment.date\"\n            #date=\"ngModel\"\n            min=\"{{today | date: 'yyyy-MM-dd'}}\"\n            >\n            <div class=\"error\" *ngIf=\"appointment.date == null\">\n                <span *ngIf=\"appointment.date == null\">Date is required.</span>\n            </div>\n        </div>\n        <div>\n            <label for=\"time\">Time:</label>\n            <input\n            type=\"time\"\n            name=\"time\"\n            required\n            [(ngModel)]=\"appointment.time\"\n            #time=\"ngModel\"\n\n            >\n            <div class=\"error\" *ngIf=\"appointment.time == null\">\n                <span *ngIf=\"appointment.time == null\">Time is required.</span>\n            </div>\n        </div>\n        <div>\n            <label class=\"top\" for=\"complain\">Complaint:</label>\n            <textarea\n            name=\"complain\"\n            required\n            minlength=\"10\"\n            [(ngModel)]=\"appointment.complain\"\n            #complain=\"ngModel\"\n            ></textarea>\n            <div class=\"error\" *ngIf=\"appointment.complain.length < 10\">\n                <span *ngIf=\"appointment.complain.length < 1\">Question is required.</span>\n                <span *ngIf=\"appointment.complain.length >= 1 && appointment.complain.length < 10\">Complaint must be at least 10 characters.</span>\n            </div>\n        </div>\n        <div>\n            <input\n            type=\"submit\"\n            value=\"Create\"\n            [disabled]=\"form.invalid\"\n            > <button [routerLink]=\"['/']\">Go back</button>\n        </div>\n    </form>\n</div>\n</div>\n"
+module.exports = "<nav class=\"navbar navbar-light bg-light justify-content-between\">\n    <span class=\"navbar-brand\">\n        <img src=\"/assets/favicon.png\" width=\"30\" height=\"30\" class=\"d-inline-block align-top\" alt=\"Doctor's Appointments Logo\"> Doctor's Appointments\n    </span>\n    <button class=\"btn btn-sm btn-outline-secondary\" name=\"logout\" (click)=\"logout()\">Logout</button>\n</nav>\n<div class=\"col-8 offset-2 text-center\">\n    <h1>Schedule Appointment</h1>\n    <p>The doctor has availability for 3 appointments per day between the hours of 8am-5pm.</p>\n    <p>You may only schedule 1 appointment each day.</p>\n    <p>All appointments must be scheduled at least 20 minutes apart.</p>\n    <p>We look forward to taking care of you.</p>\n    <div *ngIf='error' class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">\n        {{error}}\n        <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <form class=\"col-md-6 offset-md-3 text-left\" #form=\"ngForm\" (submit)=\"onSubmit()\">\n        <div class=\"form-group\">\n            <label for=\"date\">Date:</label>\n            <input\n            type=\"date\"\n            name=\"date\"\n            required\n            [(ngModel)]=\"appointment.date\"\n            #date=\"ngModel\"\n            min=\"{{today | date: 'yyyy-MM-dd'}}\"\n            class=\"form-control\"\n            >\n            <small class=\"form-text text-muted\" *ngIf=\"appointment.date == null\">\n                <span *ngIf=\"appointment.date == null\">Date is required.</span>\n            </small>\n        </div>\n        <div class=\"form-group\">\n            <label for=\"time\">Time:</label>\n            <input\n            type=\"time\"\n            name=\"time\"\n            required\n            [(ngModel)]=\"appointment.time\"\n            #time=\"ngModel\"\n            class=\"form-control\"\n            >\n            <small class=\"form-text text-muted\" *ngIf=\"appointment.time == null\">\n                <span *ngIf=\"appointment.time == null\">Time is required.</span>\n            </small>\n        </div>\n        <div class=form-group>\n            <label class=\"top\" for=\"complain\">Complaint:</label>\n            <textarea\n            name=\"complain\"\n            required\n            minlength=\"10\"\n            [(ngModel)]=\"appointment.complain\"\n            #complain=\"ngModel\"\n            class=\"form-control\"\n            ></textarea>\n            <small class=\"form-text text-muted\" *ngIf=\"appointment.complain.length < 10\">\n                <span *ngIf=\"appointment.complain.length < 1\">Complaint is required.</span>\n                <span *ngIf=\"appointment.complain.length >= 1 && appointment.complain.length < 10\">Complaint must be at least 10 characters.</span>\n            </small>\n        </div>\n        <div class=\"text-center\">\n            <input\n            type=\"submit\"\n            value=\"Schedule\"\n            [disabled]=\"form.invalid\"\n            class=\"btn btn-primary\"\n            >\n        </div>\n    </form>\n    <button class=\"btn btn-outline-secondary\" [routerLink]=\"['/']\">Back</button>\n</div>\n"
 
 /***/ }),
 
@@ -81,19 +81,31 @@ var AddComponent = (function () {
             .then(function (user) { return _this.user = user; })
             .catch(function (err) { return _this._router.navigateByUrl('/login'); });
     };
+    AddComponent.prototype.logout = function () {
+        var _this = this;
+        this._us.logout()
+            .then(function (response) { return _this._router.navigateByUrl('/login'); });
+    };
     AddComponent.prototype.onSubmit = function () {
         var _this = this;
         this.error = "";
         var datePipe = new __WEBPACK_IMPORTED_MODULE_1__angular_common__["l" /* DatePipe */]('en-US');
         var todaydate = datePipe.transform((new Date(this.today)), 'yyyy-MM-dd');
         var todaytime = new Date(Date.now()).getHours();
+        var todaymins = new Date(Date.now()).getMinutes();
         var hours = this.appointment.time.split(':')[0];
         var minutes = this.appointment.time.split(':')[1];
-        if (this.appointment.date == todaydate) {
+        if (this.appointment.date < todaydate) {
+            this.error = "Date must be in the future.";
+        }
+        else if (this.appointment.date == todaydate) {
             if (hours < todaytime) {
                 this.error = "Time must be in the future.";
             }
-            else if (hours < this.timemin || hours > this.timemax) {
+            else if (hours == todaytime && minutes < todaymins) {
+                this.error = "Time must be in the future.";
+            }
+            else if (hours < this.timemin || hours > this.timemax || (hours == this.timemax && minutes > 0)) {
                 this.error = "Time must be between 8:00am and 5:00pm.";
             }
             else {
@@ -110,7 +122,7 @@ var AddComponent = (function () {
             }
         }
         else {
-            if (hours < this.timemin || hours > this.timemax) {
+            if (hours < this.timemin || hours > this.timemax || (hours == this.timemax && minutes > 0)) {
                 this.error = "Time must be between 8:00am and 5:00pm.";
             }
             else {
@@ -350,7 +362,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: row wrap;\n            flex-flow: row wrap;\n}\n.welcome {\n    /*flex-grow: 3;*/\n    -ms-flex-preferred-size: 100%;\n        flex-basis: 100%;\n}\n.logout {\n    text-align: right;\n    /*flex-grow: 1;*/\n    -ms-flex-preferred-size: 100%;\n        flex-basis: 100%;\n}\n.content {\n    -ms-flex-preferred-size: 100%;\n        flex-basis: 100%;\n}\n.appointments {\n    /*flex-grow: 1;*/\n    -ms-flex-preferred-size: 100%;\n        flex-basis: 100%;\n}\n.newAppointments {\n    /*flex-grow: 1;*/\n    -ms-flex-preferred-size: 100%;\n        flex-basis: 100%;\n}\n", ""]);
+exports.push([module.i, ".col {\n    margin-bottom: 20px;\n}\n", ""]);
 
 // exports
 
@@ -363,7 +375,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <div class=\"logout\">\n        <button name=\"logout\" (click)=\"logout()\">Logout</button>\n    </div>\n    <h1 class=\"welcome\" *ngIf=\"user\">Welcome {{ user.name }}!</h1>\n    <div class=\"content\">\n        <div class=\"appointments\">\n            <app-homedash *ngIf=\"user\" [appointments] = \"appointments\" [user]=\"user\" (refresh)=\"refresh()\"></app-homedash>\n        </div>\n        <div class=\"newAppointment\">\n            <a [routerLink]=\"['/new_appointment']\"><button>Add New Appointment</button></a>\n        </div>\n\n    </div>\n</div>\n"
+module.exports = "<nav class=\"navbar navbar-light bg-light justify-content-between\">\n    <span class=\"navbar-brand\">\n        <img src=\"/assets/favicon.png\" width=\"30\" height=\"30\" class=\"d-inline-block align-top\" alt=\"Doctor's Appointments Logo\"> Doctor's Appointments\n    </span>\n    <button class=\"btn btn-sm btn-outline-secondary\" name=\"logout\" (click)=\"logout()\">Logout</button>\n</nav>\n<div class=\"col-8 offset-2 text-center\">\n    <div class=\"col\">\n        <h1 *ngIf=\"user\">Welcome {{ user.name }}!</h1>\n        <p>Please schedule an appointment at your convenience.</p>\n    </div>\n    <div class=\"col\">\n        <app-homedash *ngIf=\"user\" [appointments] = \"appointments\" [user]=\"user\" (refresh)=\"refresh()\"></app-homedash>\n    </div>\n    <div class=\"col\">\n        <a class=\"btn btn-primary\" [routerLink]=\"['/new_appointment']\">Schedule Appointment</a>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -456,7 +468,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".search {\n    margin-bottom: 20px;\n}\n", ""]);
 
 // exports
 
@@ -469,7 +481,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/homedash/homedash.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Doctor's Appointments</h2>\n\n<form #searchForm=\"ngForm\" (submit)=\"search()\">\n    <input type=\"search\" name=\"value\" required #value=\"ngModel\" [(ngModel)]=\"searchfield.value\">\n    <input type=\"submit\" value=\"Search\" [disabled]=\"searchForm.invalid\">\n    <button *ngIf=\"searched\" (click)=\"reset()\">Show All</button>\n</form>\n\n<table>\n    <tr>\n        <th>Date</th>\n        <th>Time</th>\n        <th>Patient Name</th>\n        <th>Complaint</th>\n    </tr>\n    <tr *ngFor=\"let appointment of display_appointments\">\n        <td>{{ appointment.date | date:\"MM/dd/yy\" }}</td>\n        <td>{{ appointment.time | date:\"h:mm a\" }}</td>\n        <td>{{ appointment._username }} <span *ngIf=\"appointment._userID == _user._id\">(You)</span></td>\n        <td>{{ appointment.complain }}<button *ngIf=\"appointment._userID == _user._id && appointment.date > today\"  (click)=\"delete(appointment._id)\">Delete</button></td>\n    </tr>\n</table>\n"
+module.exports = "<form #searchForm=\"ngForm\" (submit)=\"search()\" class=\"form search\">\n    <div class=\"form-row justify-content-center\">\n        <div class=\"col-sm-8\">\n            <input class=\"form-control mr-sm-2\" aria-label=\"Search\" type=\"search\" name=\"value\" required #value=\"ngModel\" [(ngModel)]=\"searchfield.value\" placeholder=\"Search by patient name or complaint\">\n        </div>\n        <div class=\"col-sm-1\">\n            <input class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\" value=\"Search\" [disabled]=\"searchForm.invalid\">\n        </div>\n        <div class=\"col-sm-1\">\n            <button class=\"btn btn-outline-success my-2 my-sm-0\" *ngIf=\"searched\" (click)=\"reset()\">Show All</button>\n        </div>\n    </div>\n</form>\n\n<table class=\"table table-hover\">\n    <thead class=\"thead-light\">\n        <tr>\n            <th>Date</th>\n            <th>Time</th>\n            <th>Patient Name</th>\n            <th>Complaint</th>\n            <th></th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr *ngFor=\"let appointment of display_appointments\">\n            <td>{{ appointment.date | date:\"MM/dd/yy\" }}</td>\n            <td>{{ appointment.time | date:\"h:mm a\" }}</td>\n            <td>{{ appointment._username }} <span *ngIf=\"appointment._userID == _user._id\">(You)</span></td>\n            <td>{{ appointment.complain }}</td>\n            <td><button class=\"btn btn-outline-secondary btn-sm\" *ngIf=\"appointment._userID == _user._id && appointment.date > today\"  (click)=\"delete(appointment._id)\">Delete</button></td>\n        </tr>\n    </tbody>\n</table>\n"
 
 /***/ }),
 
@@ -520,10 +532,6 @@ var HomedashComponent = (function () {
             var _this = this;
             for (var _i = 0, newappointments_1 = newappointments; _i < newappointments_1.length; _i++) {
                 var appointment = newappointments_1[_i];
-                // console.log((this.today).getTime())
-                // let time = (new Date(appointment.time)).getTime()
-                // let test = (new Date(appointment.date)).setTime(appointment.time.getTime())
-                // console.log(time)
                 appointment.date = new Date(appointment.date);
                 var _localOffset = 2 * 60 * 60000;
                 var _userOffset = (appointment.date).getTimezoneOffset() * 60000;
@@ -626,7 +634,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".info {\n    padding: 10px;\n}\n", ""]);
+exports.push([module.i, ".info {\n    padding: 50px 10px 0 10px;\n}\n.form {\n    margin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -639,7 +647,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <h1>Doctor's Appointments</h1>\n    <div class=\"content\">\n        <div class=\"info\">\n            <p>Please enter your name to view and add appointments.</p>\n        </div>\n        <form #form=\"ngForm\" (submit)=\"login()\">\n            Name: <input\n            type=\"text\"\n            name=\"name\"\n            required\n            #name=\"ngModel\"\n            [(ngModel)]=\"user.name\"\n            >\n            <input type=\"submit\" value=\"Login\" [disabled]=\"form.invalid\">\n        </form>\n    </div>\n</div>\n"
+module.exports = "<nav class=\"navbar navbar-light bg-light justify-content-between\">\n    <span class=\"navbar-brand\">\n        <img src=\"/assets/favicon.png\" width=\"30\" height=\"30\" class=\"d-inline-block align-top\" alt=\"Doctor's Appointments Logo\"> Doctor's Appointments\n    </span>\n</nav>\n<div class=\"col-8 offset-2 text-center\">\n    <h1>Doctor's Appointments</h1>\n    <p>A simple appointment scheduling application with date and time restrictions.</p>\n    <p>Upon signing in you will be presented with the doctor's current schedule and be able to book your own appointment.</p>\n    <p>Please sign in with your name to get started.</p>\n    <form class=\"col-6 offset-3\" #form=\"ngForm\" (submit)=\"login()\">\n        <div class=\"form-row\">\n            <div class=\"col-md-8\">\n                <input\n                type=\"text\"\n                name=\"name\"\n                required\n                #name=\"ngModel\"\n                [(ngModel)]=\"user.name\"\n                class=\"form-control mb-2 mr-sm-2\"\n                placeholder=\"Name\"\n                >\n            </div>\n            <div class=\"col-md-4\">\n                <input class=\"btn btn-primary mb-2\" type=\"submit\" value=\"Login\" [disabled]=\"form.invalid\">\n            </div>\n        </div>\n    </form>\n</div>\n"
 
 /***/ }),
 

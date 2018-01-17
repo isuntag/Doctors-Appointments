@@ -40,21 +40,31 @@ module.exports = {
 						return res.status(403).json('You already have an appointment scheduled for this day. Please select a different day.')
 					}
 					else{
-						let appointment = new Appointment(req.body);
-						appointment.save( err => {
+						Appointment.find({'date': req.body.date, 'time': {$gt: req.body.time-20, $lt: req.body.time+20}}, function(err, response) {
 							if(err) {
-								console.log(err);
-								return res.status(402).json(err);
+								return res.status(402).json(err)
+							}
+							else if(response.length > 0){
+								return res.status(403).json('This appointment time is unavailable. Appointments must be scheduled at least 20 minutes apart. Please choose a different time.')
 							}
 							else{
-								console.log(appointment);
-								return res.json(appointment)
+								let appointment = new Appointment(req.body);
+								appointment.save( err => {
+									if(err) {
+										console.log(err);
+										return res.status(402).json(err);
+									}
+									else{
+										console.log(appointment);
+										return res.json(appointment)
+									}
+								})
 							}
+
 						})
 					}
 				})
-
 			}
-			})
+		})
 	},
 }

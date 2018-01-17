@@ -1,6 +1,6 @@
-.top {
-    vertical-align: top;
+small {
+    text-align: center;
 }
-.error {
-    color: graytext;
+form {
+    margin-bottom: 20px;
 }

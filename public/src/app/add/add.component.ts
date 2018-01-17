@@ -25,18 +25,29 @@ export class AddComponent implements OnInit {
       .then(user => this.user = user)
       .catch(err => this._router.navigateByUrl('/login'))
   }
+  logout() {
+      this._us.logout()
+      .then(response => this._router.navigateByUrl('/login'))
+  }
   onSubmit() {
       this.error = "";
       let datePipe = new DatePipe('en-US');
       let todaydate = datePipe.transform((new Date(this.today)), 'yyyy-MM-dd');
       let todaytime = new Date(Date.now()).getHours();
+      let todaymins = new Date(Date.now()).getMinutes();
       let hours = this.appointment.time.split(':')[0];
       let minutes = this.appointment.time.split(':')[1];
-      if(this.appointment.date == todaydate){
+      if(this.appointment.date < todaydate) {
+          this.error = "Date must be in the future."
+      }
+      else if(this.appointment.date == todaydate){
           if(hours < todaytime){
                this.error = "Time must be in the future.";
           }
-          else if(hours < this.timemin || hours > this.timemax) {
+          else if(hours == todaytime && minutes < todaymins){
+              this.error = "Time must be in the future.";
+          }
+          else if(hours < this.timemin || hours > this.timemax || (hours == this.timemax && minutes > 0)) {
               this.error = "Time must be between 8:00am and 5:00pm."
           }
           else{
@@ -53,7 +64,7 @@ export class AddComponent implements OnInit {
          }
       }
       else{
-         if(hours < this.timemin || hours > this.timemax){
+         if(hours < this.timemin || hours > this.timemax || (hours == this.timemax && minutes > 0)){
               this.error = "Time must be between 8:00am and 5:00pm.";
          }
          else{

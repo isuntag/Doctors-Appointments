@@ -1,24 +1,3 @@
-.container {
-    display: flex;
-    flex-flow: row wrap;
-}
-.welcome {
-    /*flex-grow: 3;*/
-    flex-basis: 100%;
-}
-.logout {
-    text-align: right;
-    /*flex-grow: 1;*/
-    flex-basis: 100%;
-}
-.content {
-    flex-basis: 100%;
-}
-.appointments {
-    /*flex-grow: 1;*/
-    flex-basis: 100%;
-}
-.newAppointments {
-    /*flex-grow: 1;*/
-    flex-basis: 100%;
+.col {
+    margin-bottom: 20px;
 }

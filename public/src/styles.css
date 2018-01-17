@@ -2,7 +2,7 @@
 
 * {
     vertical-align: baseline;
-    font-weight: 100;
+    font-weight: 200;
     font-family: 'Helvetica Neue', sans-serif;
     font-style: inherit;
     font-size: 100%;
@@ -11,59 +11,14 @@
     padding: 0;
     margin: 0;
 }
-.container {
+
+body {
     font: 100 16pt "Helvetica Neue", sans-serif;
     color: #343434;
-    padding: 10px;
 }
 h1 {
     font-size: 60pt;
     color: #8BBBD8;
+    font-weight: 200;
     margin: 0;
-    text-align: center;
-}
-h2 {
-    font-size: 30pt;
-    margin: 10px 0;
-    color: #9BD3E3;
-}
-th {
-    font-weight: 300;
-    /*color: #CFCDCF;*/
-    background-color: #EAE8EA;
-}
-th, td {
-    padding: 5px 10px;
-}
-table {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-.content {
-    width: 80%;
-    padding: 10px;
-    text-align: center;
-    margin: 0 auto;
-}
-.forminput, .formsubmit {
-  padding: 0 5px;
-  margin: 5px;
-}
-input, textarea {
-  background-color: #EAE8EA;
-  padding: 0 3px;
-}
-input[type=submit] {
-  background-color:#EAE8EA;
-  /*color: #CFCDCF;*/
-}
-button, button:focus {
-    border: none;
-    padding: 0 5px;
-    margin: 5px;
-    outline: none;
-    font: 100 16pt 'Helvetica Neue', sans-serif;
-    /*color: #CFCDCF;*/
-    background-color: #EAE8EA;
 }

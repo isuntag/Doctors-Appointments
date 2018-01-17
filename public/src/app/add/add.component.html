@@ -1,10 +1,23 @@
-<div class="container">
-    <h1 class="welcome">New Appointment</h1>
-    <div class="content">
-    <p *ngIf='error'>{{error}}</p>
-
-    <form #form="ngForm" (submit)="onSubmit()">
-        <div>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <span class="navbar-brand">
+        <img src="/assets/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="Doctor's Appointments Logo"> Doctor's Appointments
+    </span>
+    <button class="btn btn-sm btn-outline-secondary" name="logout" (click)="logout()">Logout</button>
+</nav>
+<div class="col-8 offset-2 text-center">
+    <h1>Schedule Appointment</h1>
+    <p>The doctor has availability for 3 appointments per day between the hours of 8am-5pm.</p>
+    <p>You may only schedule 1 appointment each day.</p>
+    <p>All appointments must be scheduled at least 20 minutes apart.</p>
+    <p>We look forward to taking care of you.</p>
+    <div *ngIf='error' class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form class="col-md-6 offset-md-3 text-left" #form="ngForm" (submit)="onSubmit()">
+        <div class="form-group">
             <label for="date">Date:</label>
             <input
             type="date"
@@ -13,12 +26,13 @@
             [(ngModel)]="appointment.date"
             #date="ngModel"
             min="{{today | date: 'yyyy-MM-dd'}}"
+            class="form-control"
             >
-            <div class="error" *ngIf="appointment.date == null">
+            <small class="form-text text-muted" *ngIf="appointment.date == null">
                 <span *ngIf="appointment.date == null">Date is required.</span>
-            </div>
+            </small>
         </div>
-        <div>
+        <div class="form-group">
             <label for="time">Time:</label>
             <input
             type="time"
@@ -26,13 +40,13 @@
             required
             [(ngModel)]="appointment.time"
             #time="ngModel"
-
+            class="form-control"
             >
-            <div class="error" *ngIf="appointment.time == null">
+            <small class="form-text text-muted" *ngIf="appointment.time == null">
                 <span *ngIf="appointment.time == null">Time is required.</span>
-            </div>
+            </small>
         </div>
-        <div>
+        <div class=form-group>
             <label class="top" for="complain">Complaint:</label>
             <textarea
             name="complain"
@@ -40,19 +54,21 @@
             minlength="10"
             [(ngModel)]="appointment.complain"
             #complain="ngModel"
+            class="form-control"
             ></textarea>
-            <div class="error" *ngIf="appointment.complain.length < 10">
-                <span *ngIf="appointment.complain.length < 1">Question is required.</span>
+            <small class="form-text text-muted" *ngIf="appointment.complain.length < 10">
+                <span *ngIf="appointment.complain.length < 1">Complaint is required.</span>
                 <span *ngIf="appointment.complain.length >= 1 && appointment.complain.length < 10">Complaint must be at least 10 characters.</span>
-            </div>
+            </small>
         </div>
-        <div>
+        <div class="text-center">
             <input
             type="submit"
-            value="Create"
+            value="Schedule"
             [disabled]="form.invalid"
-            > <button [routerLink]="['/']">Go back</button>
+            class="btn btn-primary"
+            >
         </div>
     </form>
-</div>
+    <button class="btn btn-outline-secondary" [routerLink]="['/']">Back</button>
 </div>

@@ -1,15 +1,18 @@
-<div class="container">
-    <div class="logout">
-        <button name="logout" (click)="logout()">Logout</button>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <span class="navbar-brand">
+        <img src="/assets/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="Doctor's Appointments Logo"> Doctor's Appointments
+    </span>
+    <button class="btn btn-sm btn-outline-secondary" name="logout" (click)="logout()">Logout</button>
+</nav>
+<div class="col-8 offset-2 text-center">
+    <div class="col">
+        <h1 *ngIf="user">Welcome {{ user.name }}!</h1>
+        <p>Please schedule an appointment at your convenience.</p>
     </div>
-    <h1 class="welcome" *ngIf="user">Welcome {{ user.name }}!</h1>
-    <div class="content">
-        <div class="appointments">
-            <app-homedash *ngIf="user" [appointments] = "appointments" [user]="user" (refresh)="refresh()"></app-homedash>
-        </div>
-        <div class="newAppointment">
-            <a [routerLink]="['/new_appointment']"><button>Add New Appointment</button></a>
-        </div>
-
+    <div class="col">
+        <app-homedash *ngIf="user" [appointments] = "appointments" [user]="user" (refresh)="refresh()"></app-homedash>
+    </div>
+    <div class="col">
+        <a class="btn btn-primary" [routerLink]="['/new_appointment']">Schedule Appointment</a>
     </div>
 </div>

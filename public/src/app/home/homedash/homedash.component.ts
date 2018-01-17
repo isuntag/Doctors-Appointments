@@ -27,10 +27,6 @@ export class HomedashComponent implements OnInit {
 
     @Input() set appointments(newappointments){
         for(let appointment of newappointments){
-            // console.log((this.today).getTime())
-            // let time = (new Date(appointment.time)).getTime()
-            // let test = (new Date(appointment.date)).setTime(appointment.time.getTime())
-            // console.log(time)
             appointment.date = new Date(appointment.date)
             let _localOffset = 2*60*60000;
             let _userOffset = (appointment.date).getTimezoneOffset()*60000;

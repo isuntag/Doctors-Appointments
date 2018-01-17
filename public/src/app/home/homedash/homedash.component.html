@@ -1,22 +1,34 @@
-<h2>Doctor's Appointments</h2>
-
-<form #searchForm="ngForm" (submit)="search()">
-    <input type="search" name="value" required #value="ngModel" [(ngModel)]="searchfield.value">
-    <input type="submit" value="Search" [disabled]="searchForm.invalid">
-    <button *ngIf="searched" (click)="reset()">Show All</button>
+<form #searchForm="ngForm" (submit)="search()" class="form search">
+    <div class="form-row justify-content-center">
+        <div class="col-sm-8">
+            <input class="form-control mr-sm-2" aria-label="Search" type="search" name="value" required #value="ngModel" [(ngModel)]="searchfield.value" placeholder="Search by patient name or complaint">
+        </div>
+        <div class="col-sm-1">
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search" [disabled]="searchForm.invalid">
+        </div>
+        <div class="col-sm-1">
+            <button class="btn btn-outline-success my-2 my-sm-0" *ngIf="searched" (click)="reset()">Show All</button>
+        </div>
+    </div>
 </form>
 
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Patient Name</th>
-        <th>Complaint</th>
-    </tr>
-    <tr *ngFor="let appointment of display_appointments">
-        <td>{{ appointment.date | date:"MM/dd/yy" }}</td>
-        <td>{{ appointment.time | date:"h:mm a" }}</td>
-        <td>{{ appointment._username }} <span *ngIf="appointment._userID == _user._id">(You)</span></td>
-        <td>{{ appointment.complain }}<button *ngIf="appointment._userID == _user._id && appointment.date > today"  (click)="delete(appointment._id)">Delete</button></td>
-    </tr>
+<table class="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Patient Name</th>
+            <th>Complaint</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let appointment of display_appointments">
+            <td>{{ appointment.date | date:"MM/dd/yy" }}</td>
+            <td>{{ appointment.time | date:"h:mm a" }}</td>
+            <td>{{ appointment._username }} <span *ngIf="appointment._userID == _user._id">(You)</span></td>
+            <td>{{ appointment.complain }}</td>
+            <td><button class="btn btn-outline-secondary btn-sm" *ngIf="appointment._userID == _user._id && appointment.date > today"  (click)="delete(appointment._id)">Delete</button></td>
+        </tr>
+    </tbody>
 </table>
